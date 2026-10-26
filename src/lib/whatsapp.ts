@@ -25,14 +25,22 @@ type TemplateLead = {
 
 /** Preenche {nome}, {negocio}, {link_previa}, {valor} */
 export function fillTemplate(body: string, lead: TemplateLead) {
-  const firstName = lead.name.trim().split(/\s+/)[0] ?? lead.name;
+  // Lead do Google Maps: o "nome" é o próprio negócio, não sabemos quem atende
+  const unknownContact = !!lead.business_name && lead.name.trim() === lead.business_name.trim();
+  const firstName = unknownContact ? "" : (lead.name.trim().split(/\s+/)[0] ?? lead.name);
   const map: Record<string, string> = {
     nome: firstName,
     negocio: lead.business_name || "seu negócio",
     link_previa: lead.preview_url || "[link da prévia]",
     valor: lead.estimated_value != null ? formatCurrency(lead.estimated_value) : "[valor]",
   };
-  return body.replace(/\{(nome|negocio|link_previa|valor)\}/g, (_, key: string) => map[key]);
+  return (
+    body
+      .replace(/\{(nome|negocio|link_previa|valor)\}/g, (_, key: string) => map[key])
+      // "Oi, !" -> "Oi!" e "Oi, , tudo certo?" -> "Oi, tudo certo?" quando não há nome
+      .replace(/,\s*,/g, ",")
+      .replace(/,\s*([!?.])/g, "$1")
+  );
 }
 
 export const TEMPLATE_PLACEHOLDERS = ["{nome}", "{negocio}", "{link_previa}", "{valor}"] as const;

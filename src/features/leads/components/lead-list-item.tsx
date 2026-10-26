@@ -25,7 +25,7 @@ export function LeadListItem({ lead, context, actions }: Props) {
           <Badge>{STAGE_LABEL[lead.stage_id as StageId]}</Badge>
         </div>
         <p className="truncate text-sm text-muted">
-          {[lead.business_name, lead.segment && SEGMENT_SHORT[lead.segment as SegmentId], SOURCE_LABEL[lead.source as SourceId]]
+          {[lead.business_name !== lead.name && lead.business_name, lead.segment && SEGMENT_SHORT[lead.segment as SegmentId], SOURCE_LABEL[lead.source as SourceId]]
             .filter(Boolean)
             .join(" · ")}
           {lead.estimated_value != null && ` · ${formatCurrency(lead.estimated_value)}`}

@@ -137,6 +137,24 @@ npm run gen:types
 
 ---
 
+## Buscar clientes no Google Maps
+
+A tela **Buscar clientes** (`/painel/buscar`) procura negócios no Google Maps por tipo e região do DF, mostra só os que **não têm site próprio** (quem só tem Instagram, Facebook ou Linktree entra como "Só rede social") e adiciona ao pipeline com um clique. Cada negócio importado já entra com:
+- telefone (celulares vêm primeiro, porque dá para chamar no WhatsApp), endereço, nota e número de avaliações;
+- próxima ação "Primeiro contato pelo WhatsApp" para hoje, aparecendo na tela **Hoje**;
+- uma nota na linha do tempo dizendo de onde veio.
+
+O mesmo negócio nunca é importado duas vezes (trava por `google_place_id` e checagem de telefone).
+
+**Ativar:**
+1. Em [console.cloud.google.com](https://console.cloud.google.com), crie um projeto e ative o **faturamento**.
+2. APIs e serviços → Biblioteca → ative **Places API (New)**.
+3. Credenciais → Criar credencial → Chave de API. Em "Restrições de API", limite a chave à **Places API (New)**.
+4. Na Vercel, crie a variável `GOOGLE_PLACES_API_KEY` com a chave (Production e Preview) e faça **Redeploy**.
+5. Recomendado: em Faturamento → Orçamentos e alertas, crie um alerta (ex.: US$ 10/mês).
+
+**Custo:** cada busca ou "Carregar mais" é 1 requisição do SKU *Text Search Enterprise* (até 20 negócios por requisição). O Google oferece uma cota gratuita mensal por SKU; confira os valores atuais em [Places API pricing](https://developers.google.com/maps/billing-and-pricing/pricing#places-pricing).
+
 ## Integrar um formulário externo
 
 Envie `POST /api/leads` com JSON nos campos do schema de `features/diagnostico/schema.ts` (`name`, `business_name`, `whatsapp`, `city_region`, `segment`, `needs`, `budget_range`, `timeline`, `consent: true`…) e, opcionalmente, `attribution: { utm_source, utm_medium, utm_campaign, utm_content, landing_page, referrer }`. Um `utm_medium` igual a `cpc`, `paid_social`, `ads` etc. marca o lead como **tráfego pago**.

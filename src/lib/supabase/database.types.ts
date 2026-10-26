@@ -129,6 +129,12 @@ export type Database = {
           temperature: string | null
           owner_id: string | null
           is_sample: boolean
+          address: string | null
+          google_place_id: string | null
+          google_maps_url: string | null
+          google_rating: number | null
+          google_reviews: number | null
+          google_category: string | null
         }
         Insert: {
           id?: string
@@ -174,6 +180,12 @@ export type Database = {
           score?: number
           owner_id?: string | null
           is_sample?: boolean
+          address?: string | null
+          google_place_id?: string | null
+          google_maps_url?: string | null
+          google_rating?: number | null
+          google_reviews?: number | null
+          google_category?: string | null
           temperature?: never
         }
         Update: {
@@ -220,6 +232,12 @@ export type Database = {
           score?: number
           owner_id?: string | null
           is_sample?: boolean
+          address?: string | null
+          google_place_id?: string | null
+          google_maps_url?: string | null
+          google_rating?: number | null
+          google_reviews?: number | null
+          google_category?: string | null
           temperature?: never
         }
         Relationships: [

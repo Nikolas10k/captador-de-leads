@@ -3,15 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
-import { CalendarCheck, Columns3, LayoutDashboard, MessageSquareText, Users } from "lucide-react";
+import { CalendarCheck, Columns3, LayoutDashboard, MessageSquareText, Search, Users } from "lucide-react";
 import { cn } from "@/lib/format";
 
 const items = [
-  { href: "/painel", label: "Hoje", icon: CalendarCheck },
-  { href: "/painel/pipeline", label: "Pipeline", icon: Columns3 },
-  { href: "/painel/leads", label: "Leads", icon: Users },
-  { href: "/painel/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/painel/modelos", label: "Modelos", icon: MessageSquareText },
+  { href: "/painel", label: "Hoje", short: "Hoje", icon: CalendarCheck },
+  { href: "/painel/buscar", label: "Buscar clientes", short: "Buscar", icon: Search },
+  { href: "/painel/pipeline", label: "Pipeline", short: "Pipeline", icon: Columns3 },
+  { href: "/painel/leads", label: "Leads", short: "Leads", icon: Users },
+  { href: "/painel/dashboard", label: "Dashboard", short: "Números", icon: LayoutDashboard },
+  { href: "/painel/modelos", label: "Modelos", short: "Modelos", icon: MessageSquareText },
 ] as const;
 
 function isActive(pathname: string, href: string) {
@@ -70,19 +71,19 @@ function BottomNavList({ pathname }: { pathname: string }) {
   return (
     <nav
       aria-label="Painel"
-      className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
     >
-      {items.map(({ href, label, icon: Icon }) => {
+      {items.map(({ href, short, icon: Icon }) => {
         const active = isActive(pathname, href);
         return (
           <Link
             key={href}
             href={href}
             aria-current={active ? "page" : undefined}
-            className={cn("flex h-16 flex-col items-center justify-center gap-1 text-xs", active ? "font-semibold text-ink" : "text-muted")}
+            className={cn("flex h-16 flex-col items-center justify-center gap-1 text-[11px]", active ? "font-semibold text-ink" : "text-muted")}
           >
             <Icon aria-hidden className={cn("size-5", active && "text-accent")} />
-            {label}
+            {short}
           </Link>
         );
       })}

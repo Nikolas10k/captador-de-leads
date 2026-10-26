@@ -63,7 +63,7 @@ async function LeadContent({ params }: { params: PageProps<"/painel/leads/[id]">
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">{lead.name}</h1>
           <p className="text-muted">
-            {[lead.business_name, lead.city_region].filter(Boolean).join(" · ")}
+            {[lead.business_name !== lead.name && lead.business_name, lead.google_category, lead.city_region].filter(Boolean).join(" · ")}
             {lead.whatsapp && ` · ${formatPhone(lead.whatsapp)}`}
           </p>
           <QuickLinks lead={lead} />
@@ -129,6 +129,7 @@ function QuickLinks({ lead }: { lead: Lead }) {
     lead.instagram && { href: instagramUrl(lead.instagram)!, label: lead.instagram },
     lead.website_url && { href: lead.website_url, label: "Site atual" },
     lead.preview_url && { href: lead.preview_url, label: "Prévia" },
+    lead.google_maps_url && { href: lead.google_maps_url, label: "Google Maps" },
   ].filter(Boolean) as { href: string; label: string }[];
   if (links.length === 0) return null;
   return (
@@ -177,7 +178,13 @@ function Origin({ lead }: { lead: Lead }) {
   return (
     <dl>
       <Row label="Chegou em">{formatDateTime(lead.created_at)}</Row>
-      <Row label="Origem">{SOURCE_LABEL[lead.source as SourceId]}</Row>
+      <Row label="Origem">{SOURCE_LABEL[lead.source as SourceId]}{lead.google_place_id && " (Google Maps)"}</Row>
+      {lead.address && <Row label="Endereço">{lead.address}</Row>}
+      {lead.google_rating != null && (
+        <Row label="Google">
+          Nota {String(lead.google_rating).replace(".", ",")} · {lead.google_reviews} avaliações
+        </Row>
+      )}
       <Row label="Campanha">{[lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(" / ")}</Row>
       <Row label="Conteúdo">{lead.utm_content}</Row>
       <Row label="Página de entrada">{lead.landing_page}</Row>
