@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/*
+  Paleta 60-30-10
+  60% canvas/surface (neutros quentes) · 30% ink/linhas · 10% accent (laranja queimado)
+  Espaçamento: escala padrão do Tailwind (4px) usada em múltiplos de 8px (2, 4, 6, 8…).
+*/
+@theme {
+  --color-canvas: #faf9f7;
+  --color-surface: #ffffff;
+  --color-subtle: #f2f0ec;
+  --color-line: #e3e0da;
+  --color-line-strong: #c9c5bd;
+  --color-ink: #1b1a18;
+  --color-muted: #5c5851;
+  --color-accent: #b9410f;
+  --color-accent-strong: #933209;
+  --color-accent-soft: #fdf0e8;
+  --color-success: #17663a;
+  --color-success-soft: #e9f5ee;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+  --color-warn: #8a5300;
+  --color-warn-soft: #fdf3dc;
+  --color-cold: #3f4b5b;
+  --color-cold-soft: #eef1f5;
+  --color-whatsapp: #128c4a;
+  --color-whatsapp-strong: #0d6e3a;
+
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 12px;
+  --shadow-soft: 0 1px 2px rgb(27 26 24 / 0.06), 0 4px 16px rgb(27 26 24 / 0.06);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Foco sempre visível para teclado */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Rolagem horizontal do kanban sem barra pesada */
+.scroll-x {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
