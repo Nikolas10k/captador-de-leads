@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Logo } from "@/features/landing/site-chrome";
+import { Logo } from "@/features/panel/logo";
 import { LoginForm } from "@/features/auth/login-form";
 
 export const metadata: Metadata = { title: "Entrar", robots: { index: false } };

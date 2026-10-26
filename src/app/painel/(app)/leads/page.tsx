@@ -54,7 +54,7 @@ async function LeadsContent({ searchParams }: { searchParams: PageProps<"/painel
         ) : (
           <EmptyState
             title="Nenhum lead ainda"
-            description="Quando alguém preencher o diagnóstico no site, o lead aparece aqui. Você também pode cadastrar leads de prospecção."
+            description="Comece cadastrando um negócio que você quer prospectar: nome, WhatsApp e Instagram já bastam."
             action={<ButtonLink href="/painel/leads/novo">Cadastrar lead</ButtonLink>}
           />
         )

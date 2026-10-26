@@ -27,7 +27,7 @@ async function PipelineContent() {
     return (
       <EmptyState
         title="O pipeline está vazio"
-        description="Os leads do formulário aparecem aqui automaticamente. Enquanto isso, cadastre um negócio que você quer prospectar."
+        description="Cadastre os negócios que você encontrar no Instagram, no Google ou por indicação e acompanhe cada um até fechar."
         action={<ButtonLink href="/painel/leads/novo">Cadastrar lead</ButtonLink>}
       />
     );

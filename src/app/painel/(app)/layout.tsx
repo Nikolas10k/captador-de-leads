@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { LogOut, Plus } from "lucide-react";
 import { buttonClass } from "@/components/ui/button";
-import { Logo } from "@/features/landing/site-chrome";
+import { Logo } from "@/features/panel/logo";
 import { BottomNav, SideNav } from "@/features/panel/nav";
 import { getMember } from "@/features/auth/session";
 import { signOut } from "@/features/auth/actions";

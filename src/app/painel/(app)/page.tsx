@@ -28,7 +28,7 @@ async function TodayContent() {
     return (
       <EmptyState
         title="Nada pendente para hoje"
-        description="Nenhum follow-up vencido e nenhum lead novo esperando contato. Bom momento para prospectar: cadastre negócios que você encontrou no Instagram."
+        description="Nenhum follow-up vencido e nenhum lead novo esperando contato. Bom momento para prospectar: cadastre negócios que você encontrou no Instagram ou no Google."
         action={<ButtonLink href="/painel/leads/novo">Cadastrar lead de prospecção</ButtonLink>}
       />
     );

@@ -1,6 +1,6 @@
 # Captador de leads · Givance Tech
 
-Landing page de captação, diagnóstico em etapas e painel de vendas (pipeline, follow-ups, dashboard) para a Givance Tech, de Brasília/DF.
+Painel de prospecção e vendas da Givance Tech (Brasília/DF): o vendedor cadastra os negócios que encontra, acompanha o pipeline, faz follow-up pelo WhatsApp e mede os resultados. A raiz do site (`/`) abre direto o painel.
 
 **Stack:** Next.js 16 (App Router, Cache Components) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Auth, RLS) · Resend · Vercel.
 
@@ -8,11 +8,8 @@ Landing page de captação, diagnóstico em etapas e painel de vendas (pipeline,
 
 ## O que tem aqui
 
-**Páginas públicas**
-- `/`: landing page (problema, serviços, como funciona, prévias, FAQ, CTA) com botão flutuante de WhatsApp.
-- `/diagnostico`: formulário em 4 etapas com barra de progresso, máscara de telefone, consentimento LGPD e rascunho salvo na sessão. Ao enviar, abre a tela de obrigado com o botão "Falar agora no WhatsApp" já com o resumo do diagnóstico na mensagem.
-- `/privacidade`: política de privacidade.
-- `POST /api/leads`: valida com zod no servidor, tem honeypot, tempo mínimo de preenchimento e rate limit por IP (5 envios a cada 10 min, contados no banco). Grava com a service role e dispara as notificações depois de responder.
+**Integração opcional**
+- `POST /api/leads`: endpoint para receber leads de um formulário externo (ex.: o site da Givance). Valida com zod (schema em `features/diagnostico/schema.ts`), tem honeypot, tempo mínimo de preenchimento e rate limit por IP, grava UTMs e dispara as notificações. Só funciona com `SUPABASE_SERVICE_ROLE_KEY` configurada; sem ela, fica inativo.
 
 **Painel (`/painel`)**, só para quem está em `givance.team_members`:
 - **Hoje**: follow-ups atrasados, os de hoje e leads novos sem contato há mais de 24h.
@@ -45,18 +42,15 @@ scripts/gen-types.mjs    regenera os tipos do Supabase
 src/
   proxy.ts               renova a sessão e protege /painel
   app/
-    (site)/              landing, diagnóstico, privacidade
-    api/leads/           rota pública do formulário
+    api/leads/           integração opcional com formulário externo
     painel/login/
     painel/(app)/        hoje, pipeline, leads, ficha, dashboard, modelos, exportar CSV
   features/
     auth/                sessão, login, checagem de membro
-    diagnostico/         schema zod por etapa, formulário, resumo para WhatsApp
+    diagnostico/         schema zod da integração /api/leads
     leads/               opções do domínio, queries, server actions, componentes
     pipeline/            kanban, seletor de etapa, diálogo de motivo de perda
     today/ dashboard/ templates/ panel/
-    landing/             seções, mockups, botão de WhatsApp
-    tracking/            UTMs, Meta Pixel, GA4
     notifications/       e-mail (Resend), Telegram, webhook (ponto de extensão)
   components/ui/         botão, campos com label/erro, badge, card, estado vazio
   lib/                   formatação BR, WhatsApp, clientes Supabase, tipos gerados
@@ -111,11 +105,10 @@ Copie `.env.example` para `.env.local` e preencha. As chaves ficam em Project Se
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | sim | cliente e servidor |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | sim | login e painel (respeita RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | sim | **só servidor**, rota do formulário |
+| `SUPABASE_SERVICE_ROLE_KEY` | só para `/api/leads` | **só servidor**, integração com formulário externo |
 | `NEXT_PUBLIC_SITE_URL` | sim em produção | links do e-mail |
 | `IP_HASH_SALT` | recomendada | hash do IP no rate limit |
 | `RESEND_API_KEY`, `LEAD_NOTIFY_EMAIL_FROM`, `LEAD_NOTIFY_EMAIL_TO` | não | e-mail de lead novo |
-| `NEXT_PUBLIC_META_PIXEL_ID`, `NEXT_PUBLIC_GA_ID` | não | rastreamento (desligado se vazio) |
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | não | aviso no Telegram |
 | `LEAD_WEBHOOK_URL`, `LEAD_WEBHOOK_SECRET` | não | n8n, Make, Z-API, WhatsApp Cloud API… |
 
@@ -144,12 +137,9 @@ npm run gen:types
 
 ---
 
-## Rastreamento
+## Integrar um formulário externo
 
-- UTMs (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`), página de entrada e referrer são guardados na primeira visita (30 dias) e enviados com o diagnóstico. O dispositivo é detectado no servidor.
-- `utm_medium` igual a `cpc`, `paid_social`, `ads` etc. marca o lead como **tráfego pago**.
-- Eventos: `ViewContent`, `Lead` e `Contact` (Meta) / `begin_checkout`, `generate_lead` e `contact` (GA4).
-- Exemplo de link para anúncio: `https://seusite.com.br/diagnostico?utm_source=instagram&utm_medium=paid_social&utm_campaign=lancamento&utm_content=video1`
+Envie `POST /api/leads` com JSON nos campos do schema de `features/diagnostico/schema.ts` (`name`, `business_name`, `whatsapp`, `city_region`, `segment`, `needs`, `budget_range`, `timeline`, `consent: true`…) e, opcionalmente, `attribution: { utm_source, utm_medium, utm_campaign, utm_content, landing_page, referrer }`. Um `utm_medium` igual a `cpc`, `paid_social`, `ads` etc. marca o lead como **tráfego pago**.
 
 ## Notificações
 

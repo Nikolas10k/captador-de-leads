@@ -16,7 +16,7 @@ export default function NewLeadPage() {
       </Link>
       <PageHeader
         title="Novo lead"
-        description="Para prospecção ativa: negócios que você encontrou no Instagram, indicações ou contatos que chegaram direto no WhatsApp."
+        description="Negócios que você encontrou no Instagram ou no Google, indicações e contatos que chegaram pelo WhatsApp. Só o nome é obrigatório."
       />
       <Card>
         <LeadForm action={createLead} mode="create" />
