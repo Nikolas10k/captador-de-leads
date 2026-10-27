@@ -115,8 +115,25 @@ export async function searchPlaces(textQuery: string, pageToken?: string) {
   return { places, nextPageToken: json.nextPageToken ?? null };
 }
 
-/** Sites que não são site próprio (o negócio continua sendo um bom prospect) */
-const NOT_A_REAL_SITE = /(instagram\.com|facebook\.com|wa\.me|whatsapp\.com|linktr\.ee|ifood\.com|linktree|beacons\.ai|bio\.link)/i;
+/**
+ * Links que não são site próprio: redes sociais, páginas de agendamento/cardápio,
+ * vitrines de shopping e sites gratuitos do Google. O negócio continua sendo um bom prospect.
+ */
+const NOT_A_REAL_SITE = new RegExp(
+  [
+    // redes sociais e agregadores de links
+    "instagram\\.com", "facebook\\.com", "fb\\.com", "tiktok\\.com", "wa\\.me", "whatsapp\\.com",
+    "linktr\\.ee", "linktree", "beacons\\.ai", "bio\\.link", "linkme\\.bio", "taplink",
+    // agendamento e delivery
+    "appbarber", "trinks\\.com", "booksy\\.com", "avec\\.app", "agendapro", "simplesagenda",
+    "ifood\\.com", "anota\\.ai", "goomer", "menudino", "cardapio", "aiqfome", "doctoralia", "boaconsulta",
+    // sites gratuitos/genéricos
+    "business\\.site", "negocio\\.site", "sites\\.google\\.com", "google\\.com",
+    // página da loja dentro do site de um shopping
+    "shopping[^/]*/loja",
+  ].join("|"),
+  "i",
+);
 
 export function hasOwnWebsite(place: Place) {
   return !!place.website && !NOT_A_REAL_SITE.test(place.website);
