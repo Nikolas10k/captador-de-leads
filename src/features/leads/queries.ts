@@ -164,21 +164,22 @@ export async function getToday() {
       .select(LEAD_CARD_COLUMNS)
       .filter("stage_id", "in", open)
       .lt("next_action_at", start.toISOString())
-      .order("next_action_at"),
+      .order("created_at", { ascending: false }),
+    // Mais recentes primeiro: quem acabou de ser importado aparece no topo
     supabase
       .from("leads")
       .select(LEAD_CARD_COLUMNS)
       .filter("stage_id", "in", open)
       .gte("next_action_at", start.toISOString())
       .lt("next_action_at", end.toISOString())
-      .order("next_action_at"),
+      .order("created_at", { ascending: false }),
     supabase
       .from("leads")
       .select(LEAD_CARD_COLUMNS)
       .eq("stage_id", "novo")
       .is("first_contact_at", null)
       .lt("created_at", dayAgo)
-      .order("created_at"),
+      .order("created_at", { ascending: false }),
   ]);
 
   for (const r of [overdue, today, uncontacted]) if (r.error) throw r.error;
