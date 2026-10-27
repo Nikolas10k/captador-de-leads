@@ -115,41 +115,71 @@ export const INTERACTION_LABEL: Record<InteractionType, string> = {
   sistema: "Sistema",
 };
 
-/** Regiões administrativas do DF + entorno */
-export const REGIONS = [
+/** Regiões administrativas e bairros do DF */
+export const DF_REGIONS = [
   "Plano Piloto (Asa Sul / Asa Norte)",
+  "Asa Sul",
+  "Asa Norte",
+  "Noroeste",
+  "Sudoeste / Octogonal",
+  "Cruzeiro",
+  "Lago Sul",
+  "Lago Norte",
+  "Jardim Botânico",
+  "Park Way",
   "Águas Claras",
   "Arniqueira",
-  "Brazlândia",
-  "Candangolândia",
+  "Taguatinga",
+  "Vicente Pires",
   "Ceilândia",
-  "Cruzeiro",
-  "Fercal",
-  "Gama",
-  "Guará",
-  "Itapoã",
-  "Jardim Botânico",
-  "Lago Norte",
-  "Lago Sul",
-  "Núcleo Bandeirante",
-  "Paranoá",
-  "Park Way",
-  "Planaltina",
+  "Sol Nascente / Pôr do Sol",
+  "Samambaia",
   "Recanto das Emas",
   "Riacho Fundo",
   "Riacho Fundo II",
-  "Samambaia",
-  "Santa Maria",
-  "São Sebastião",
-  "SCIA / Estrutural",
+  "Guará",
+  "Núcleo Bandeirante",
+  "Candangolândia",
   "SIA",
+  "SCIA / Estrutural",
+  "Gama",
+  "Santa Maria",
+  "Água Quente",
+  "Brazlândia",
   "Sobradinho",
   "Sobradinho II",
-  "Sol Nascente / Pôr do Sol",
-  "Sudoeste / Octogonal",
-  "Taguatinga",
+  "Fercal",
+  "Planaltina",
+  "Arapoanga",
+  "Paranoá",
+  "Itapoã",
+  "São Sebastião",
   "Varjão",
-  "Vicente Pires",
-  "Entorno do DF (GO)",
-  "Outra cidade",
 ] as const;
+
+/** Cidades do entorno (Goiás) */
+export const ENTORNO_CITIES = [
+  "Águas Lindas de Goiás",
+  "Valparaíso de Goiás",
+  "Luziânia",
+  "Novo Gama",
+  "Cidade Ocidental",
+  "Santo Antônio do Descoberto",
+  "Planaltina de Goiás",
+  "Formosa",
+  "Padre Bernardo",
+  "Cristalina",
+  "Alexânia",
+  "Cocalzinho de Goiás",
+  "Corumbá de Goiás",
+  "Pirenópolis",
+] as const;
+
+/** Valores antigos continuam aceitos para não quebrar leads já salvos */
+const OTHER_REGIONS = ["Entorno do DF (GO)", "Outra cidade"] as const;
+
+export const REGIONS = [...DF_REGIONS, ...ENTORNO_CITIES, ...OTHER_REGIONS] as const;
+
+export function isEntornoCity(region: string) {
+  return (ENTORNO_CITIES as readonly string[]).includes(region);
+}

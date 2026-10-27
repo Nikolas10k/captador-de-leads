@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { getMember } from "@/features/auth/session";
-import { REGIONS } from "@/features/leads/options";
+import { isEntornoCity, REGIONS } from "@/features/leads/options";
 import { hasOwnWebsite, PlacesError, searchPlaces, type Place } from "./google-places";
 
 export type ProspectResult = Place & { ownSite: boolean; leadId: string | null };
@@ -28,6 +28,7 @@ const searchSchema = z.object({
 function buildQuery(term: string, region: string) {
   if (region === "Entorno do DF (GO)") return `${term} no entorno do Distrito Federal`;
   if (region === "Outra cidade") return `${term} em Brasília DF`;
+  if (isEntornoCity(region)) return `${term} em ${region} - GO`;
   return `${term} em ${region}, Brasília - DF`;
 }
 

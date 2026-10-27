@@ -10,7 +10,7 @@ export default function BuscarPage() {
     <div className="mx-auto max-w-4xl">
       <PageHeader
         title="Buscar clientes"
-        description="Procure no Google Maps negócios do DF sem site e adicione ao pipeline com um clique. Eles já entram com o primeiro contato marcado para hoje."
+        description="Procure no Google Maps negócios do DF e entorno sem site e adicione ao pipeline com um clique. Eles já entram com o primeiro contato marcado para hoje."
       />
       {placesConfigured() ? (
         <ProspectSearch />

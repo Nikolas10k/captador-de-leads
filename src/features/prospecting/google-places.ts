@@ -21,11 +21,12 @@ const FIELD_MASK = [
   "nextPageToken",
 ].join(",");
 
-// Retângulo aproximado do DF + entorno próximo, para priorizar resultados daqui
+// Retângulo aproximado do DF + entorno goiano (Águas Lindas, Luziânia, Formosa,
+// Cristalina, Pirenópolis), para priorizar resultados da região
 const DF_BIAS = {
   rectangle: {
-    low: { latitude: -16.1, longitude: -48.35 },
-    high: { latitude: -15.45, longitude: -47.25 },
+    low: { latitude: -16.9, longitude: -49.0 },
+    high: { latitude: -15.2, longitude: -47.0 },
   },
 };
 

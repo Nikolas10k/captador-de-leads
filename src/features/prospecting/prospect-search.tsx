@@ -9,7 +9,7 @@ import { describedBy, Field, Input, Select } from "@/components/ui/field";
 import { EmptyState } from "@/components/ui/empty-state";
 import { cn, formatPhone } from "@/lib/format";
 import { useFormAction } from "@/lib/use-form-action";
-import { REGIONS } from "@/features/leads/options";
+import { DF_REGIONS, ENTORNO_CITIES } from "@/features/leads/options";
 import { importProspects, searchProspects, type ProspectResult, type SearchState } from "./actions";
 
 const SUGGESTIONS = [
@@ -94,11 +94,20 @@ export function ProspectSearch() {
           <Field id="region" label="Região" error={e.region}>
             <Select id="region" name="region" defaultValue={state.query?.region ?? ""} aria-invalid={!!e.region}>
               <option value="">Selecione</option>
-              {REGIONS.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
+              <optgroup label="Distrito Federal">
+                {DF_REGIONS.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Entorno (Goiás)">
+                {ENTORNO_CITIES.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </optgroup>
             </Select>
           </Field>
         </div>
